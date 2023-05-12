@@ -1,0 +1,35 @@
+{
+  "name": "user-journey",
+  "version": "0.1.0",
+  "description": "HID User Journey",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node-dev server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hidglobal/user-journey.git"
+  },
+  "keywords": [
+    "HID",
+    "Authentication",
+    "RMS",
+    "IDV"
+  ],
+  "author": "Adrian Castillo <adrian.castillo@hidglobal.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hidglobal/user-journey/issues"
+  },
+  "homepage": "https://github.com/hidglobal/user-journey#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3"
+  },
+  "devDependencies": {
+    "node-dev": "^8.0.0"
+  }
+}

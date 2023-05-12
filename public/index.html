@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Journey</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <div class="page page--full-width">
+    <main class="page__content">
+      <div class="region region--content">
+        <section class="section section--layout-onecol">
+          <h2>Forget Passwords!</h2>
+          <p>Stop using passwords today, with passkey support in your browser and the HID Authentication Service</p>
+          <form id="login-form">
+            <div class="form-item">
+              <label for="username">Identifier:</label>
+              <input type="text" id="username" name="username" placeholder="human@earth / radiant-morning-1234" />
+              <div class="description">FIDO helps protecting privacy, the identifier has to be unique but it does not have to be an email address</div>
+            </div>
+          </form>
+          <button class="button button--secondary" type="button" onclick="register()">Sign Up</button>
+          <button class="button button--primary" type="button" onclick="authenticate()">Log In</button>
+        </section>
+      </div>
+    </main>
+  </div>
+</body>
+<script src="js/fido.js"></script>
+</html>
