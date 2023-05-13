@@ -45,8 +45,9 @@ function register() {
             body: JSON.stringify({credential: credential})
           }).then(function (response) {
             if (response.status === 200) {
-              window.alert("Registration successful!");
+              notify("Success! You can now login without passwords 🔑");
             } else {
+              notify("Something went wrong during registration", "error");
               console.log(response.statusText);
             }
           });
@@ -99,9 +100,10 @@ function authenticate() {
             if (response.status === 200) {
               response.json().then(function (data) {
                 console.log(data);
-                window.alert("Authentication successful!");
+                notify("Authentication successful!");
               });
             } else {
+              notify("Something went wrong.", "error");
               console.log(response.statusText);
             }
           });
@@ -124,4 +126,32 @@ function arrayBufferToBase64url(buffer) {
       binary += String.fromCharCode( bytes[ i ] );
   }
   return window.btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/g, '');
+}
+
+function notify(message, type) {
+
+  document.getElementById("status-message").classList.remove("message--error");
+  document.getElementById("status-message").classList.remove("message--warning");
+  document.getElementById("status-message").classList.remove("message--status");
+  switch (type) {
+    case "error":
+      document.getElementById("status-message").classList.add("message--error");
+      break;
+    case "warning":
+      document.getElementById("status-message").classList.add("message--warning");
+      break;
+    default:
+      document.getElementById("status-message").classList.add("message--statusS");
+  }
+  if (type === undefined) {
+    document.getElementById("status-message").classList.add("message--status");
+  }
+
+  document.getElementById("status-message").children[0].innerHTML = message;
+  document.getElementById("status-message").classList.remove("message--hidden");
+  document.getElementById("status-message").classList.add("message--visible");
+  setTimeout(function () {
+    document.getElementById("status-message").classList.remove("message--visible")
+    document.getElementById("status-message").classList.add("message--hidden");
+  }, 3000);
 }

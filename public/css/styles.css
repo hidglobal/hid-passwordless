@@ -760,3 +760,71 @@ input + .description,
 .image-widget + .description {
   margin-bottom: var(--spacing05);
 }
+
+
+/****************************************************
+ * @file
+ * Visual styles for messages.
+ */
+
+ .message {
+  padding: var(--spacing05) var(--spacing07);
+  word-wrap: break-word;
+  color: var(--color);
+  border: 1px solid var(--grey);
+  border-left-width: 4px;
+  border-radius: 4px;
+  background: var(--white) no-repeat 0.5rem 1.2rem;
+  background-size: 1rem 1rem;
+  overflow-wrap: break-word;
+  /* Custom attributes to put messages on top */
+  position: fixed;
+  visibility: hidden;
+  top: calc(100% - (var(--spacing07) * 3));
+  left: var(--spacing07);
+  width: calc(100% - (var(--spacing07) * 2));
+  z-index: 200;
+}
+
+.message + .message {
+  margin-top: var(--layout02);
+}
+
+.message__text {
+  margin: 0;
+  padding: 0;
+}
+
+.message__text + .message__text {
+  margin-top: var(--layout02);
+}
+
+.message--status {
+  border-left-color: var(--statusColor);
+  background-color: rgba(148 187 32 .25);
+  background-image: url("images/check.svg");
+}
+
+.message--warning {
+  border-left-color: var(--warningColor);
+  background-color: rgba(235 99 5 .25);
+  background-image: url("images/warning.svg");
+}
+
+.message--error {
+  border-left-color: var(--errorColor);
+  background-color: rgba(211 18 69 .25);
+  background-image: url("images/error.svg");
+}
+
+.message--visible {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 1s linear;
+}
+
+.message--hidden {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 2s, opacity 2s linear;
+}

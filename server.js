@@ -298,7 +298,6 @@ app.post('/authenticate', (req, res) => {
         }).then((response) => {
           if (response) {
             response.json().then((data) => {
-              console.log(data);
               //res.json(data);
             });
           } else {

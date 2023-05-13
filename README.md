@@ -6,8 +6,9 @@ This is a boilerplate implementation for using HID User Journey in a web applica
 
 You will need to set the following environment variables to run locally:
 
-- `HID_CLIENT_ID` - The client ID of your application
-- `HID_CLIENT_SECRET` - The client secret of your application
+- `SESSION_SECRET` - A secret used to sign the session cookie
 - `HID_AUTH_URL` - The URL of the HID OpenID API service including your tenant
 - `HID_SCIM_URL` - The URL of the HID SCIM API service including your tenant
-- `SESSION_SECRET` - A secret used to sign the session cookie
+- `HID_CLIENT_ID` - The client ID of your application
+- `HID_CLIENT_SECRET` - The client secret of your application
+- `HID_REDIRECT_URI` - The address where the user is sent after authentication
