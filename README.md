@@ -12,3 +12,7 @@ You will need to set the following environment variables to run locally:
 - `HID_CLIENT_ID` - The client ID of your application
 - `HID_CLIENT_SECRET` - The client secret of your application
 - `HID_REDIRECT_URI` - The address where the user is sent after authentication
+
+## More Information
+
+You can find more details on the API calls used in the [User Authentication with FIDO](https://docs.hidglobal.com/dev/auth-service/integration/user-authentication-with-fido.htm) documentation for the HID Authentication Service.

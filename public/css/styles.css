@@ -801,19 +801,19 @@ input + .description,
 
 .message--status {
   border-left-color: var(--statusColor);
-  background-color: rgba(148 187 32 .25);
+  background-color: rgba(148 187 32 / .25);
   background-image: url("images/check.svg");
 }
 
 .message--warning {
   border-left-color: var(--warningColor);
-  background-color: rgba(235 99 5 .25);
+  background-color: rgba(235 99 5 / .25);
   background-image: url("images/warning.svg");
 }
 
 .message--error {
   border-left-color: var(--errorColor);
-  background-color: rgba(211 18 69 .25);
+  background-color: rgba(211 18 69 / .25);
   background-image: url("images/error.svg");
 }
 
