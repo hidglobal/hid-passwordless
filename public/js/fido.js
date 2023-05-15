@@ -15,6 +15,11 @@ if (window.PublicKeyCredential) {
 // 2. Create the credential and send it back to the server
 function register() {
   const username = document.getElementById("username").value;
+  if (username === "") {
+    document.getElementById("username").classList.add("error");
+    document.getElementById("username").focus();
+    return;
+  }
   fetch("/register-options", {
     method: "POST",
     headers: {
@@ -64,6 +69,11 @@ function register() {
 // 2. Create the assertion and send it back to the server
 function authenticate() {
   const username = document.getElementById("username").value;
+  if (username === "") {
+    document.getElementById("username").classList.add("error");
+    document.getElementById("username").focus();
+    return;
+  }
   fetch("/authenticate-options", {
     method: "POST",
     headers: {

@@ -16,7 +16,8 @@
           <form id="login-form">
             <div class="form-item">
               <label for="username">Identifier:</label>
-              <input type="text" id="username" name="username" placeholder="human@earth / radiant-morning-1234" />
+              <input type="text" class="form-text" id="username" name="username" placeholder="human@earth / radiant-morning-1234" 
+                onchange="document.getElementById('username').classList.remove('error')" />
               <div class="description">FIDO helps protecting privacy, the identifier has to be unique but it does not have to be an email address</div>
             </div>
           </form>

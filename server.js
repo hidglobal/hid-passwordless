@@ -101,11 +101,12 @@ app.post('/register-options', (req, res) => {
                       res.json(data);
                     });
                   } else {
+                    console.error(`/enroll/fido (Get Options): ${response.status} ${response.statusText}`);
                     res.status(response.status).send(response.statusText);
                   }
                 })
                 .catch((err) => {
-                  console.log(err);
+                  console.error(err);
                 });
               });
             } else {
@@ -113,14 +114,14 @@ app.post('/register-options', (req, res) => {
             }
           })
           .catch((err) => {
-            console.log(err);
+            console.error(err);
           });
 
         })
       });
     } else {
       // Client authentication error
-      console.log(response.status + ' ' + response.statusText);
+      console.error(`Client authentication: ${response.status} ${response.statusText}`);
     }
   })
   .catch((err) => {
@@ -151,6 +152,7 @@ app.post('/register', (req, res) => {
       delete req.session;
       res.status(200).send('OK');
     } else {
+      console.error(`/enroll/fido (Register): ${response.status} ${response.statusText}`);
       res.status(response.status).send(response.statusText);
     }
   })
@@ -215,11 +217,12 @@ app.post('/authenticate-options', (req, res) => {
                     res.json(data);
                   });
                 } else {
+                  console.error(`/code (Get Options): ${response.status} ${response.statusText}`);
                   res.status(response.status).send(response.statusText);
                 }
               })
               .catch((err) => {
-                console.log(err);
+                console.error(err);
               });
             });
           } else {
@@ -227,13 +230,13 @@ app.post('/authenticate-options', (req, res) => {
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.error(err);
         });
       });
 
     } else {
       // Client authentication error
-      console.log(response.status + ' ' + response.statusText);
+      console.error(response.status + ' ' + response.statusText);
     }
   })
   .catch((err) => {
@@ -285,7 +288,7 @@ app.post('/authenticate', (req, res) => {
             res.json(data);
           });
         } else {
-          console.log(`response: ${response.status}: ${response.statusText}`);
+          console.error(`/code (Authenticate): ${response.status}: ${response.statusText}`);
           res.status(response.status).send(response.statusText);
         }
       })
@@ -311,9 +314,10 @@ app.post('/authenticate', (req, res) => {
         }).then((response) => {
           if (response) {
             response.json().then((data) => {
-              //res.json(data);
+              res.status(200);
             });
           } else {
+            console.error(`/consent (Authenticate): ${response.status}: ${response.statusText}`);
             res.status(response.status).send(response.statusText);
           }
         })
@@ -321,7 +325,7 @@ app.post('/authenticate', (req, res) => {
     }
   })
   .catch((err) => {
-    console.log(err);
+    console.error(err);
   });
 });
 
