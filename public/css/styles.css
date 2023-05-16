@@ -90,7 +90,7 @@
   /* Status colors */
   --errorColor: var(--red);
   --statusColor: var(--lightGreen);
-  --warningColor: var(--orange);
+  --warningColor: var(--yellow);
   --unpublishedColor: hsl(0, 100%, 98%);
 
   /* Shadows */
@@ -807,7 +807,7 @@ input + .description,
 
 .message--warning {
   border-left-color: var(--warningColor);
-  background-color: rgba(235 99 5 / .25);
+  background-color: rgba(237 196 23 / .25);
   background-image: url("images/warning.svg");
 }
 

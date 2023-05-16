@@ -56,6 +56,8 @@ function register() {
               console.log(response.statusText);
             }
           });
+        }).catch(function (error) {
+          notify("Unable to create a new key, maybe try again?", "warning");
         });
       });
     } else {
@@ -117,9 +119,9 @@ function authenticate() {
               console.log(response.statusText);
             }
           });
-
+        }).catch(function (error) {
+          notify("Unable to create assertion, maybe try again?", "warning");
         });
-
       });
     } else {
       console.log(response.statusText);

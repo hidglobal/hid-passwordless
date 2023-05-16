@@ -329,6 +329,18 @@ app.post('/authenticate', (req, res) => {
   });
 });
 
+app.get('/health', (req, res) => {
+  fetch(`${process.env.HID_AUTH_URL}/token`, {
+    method: 'OPTIONS'
+  })
+  .then((response) => {
+    res.status(200).send('OK');
+  })
+  .catch((err) => {
+    res.status(500).send(err);
+  });
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/index.html'));
 });
