@@ -112,7 +112,8 @@ function authenticate() {
             if (response.status === 200) {
               response.json().then(function (data) {
                 console.log(data);
-                notify("Authentication successful!");
+                window.location.href = "/account.html";
+                //notify("Authentication successful!");
               });
             } else {
               notify("Something went wrong.", "error");
