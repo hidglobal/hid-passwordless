@@ -168,3 +168,22 @@ function notify(message, type) {
     document.getElementById("status-message").classList.add("message--hidden");
   }, 3000);
 }
+
+// Utility function to list authenticators
+function listCredentials() {
+  fetch("/passkeys").then(function (response) {
+    if (response.status === 200) {
+      response.json().then(function (user) {
+        console.log(user);
+        // devices is an array, iterate through it and add a li element for each item to the credentials ul element in the page
+        document.getElementById("title").innerHTML = `Welcome ${user.userName}`;
+        user.devices.forEach(function (device) {
+          let li = document.createElement("li");
+          let date = new Date(device.meta.created);
+          li.innerHTML = `<strong>${device.friendlyName}</strong><div>Registered on ${date.toLocaleString(undefined, {dateStyle: 'medium', timeStyle: 'short'})}</div>`;
+          document.getElementById("credentials").appendChild(li);
+        });
+      });
+    }
+  });
+}

@@ -263,19 +263,18 @@ app.post('/authenticate', (req, res) => {
   })
   .then((response) => {
     req.session.csrf = response.headers.get('server-csrf-token');
+    const finalize = new URLSearchParams();
+    finalize.append('grant_type', 'code_request');
+    finalize.append('username', req.session.username);
+    finalize.append('authType', 'AT_FIDO');
+    finalize.append('request_uri', req.session.request_uri);
+    
     if (response.ok) {
       console.log('Authentication successful, now get the token');
 
-      const finalize = new URLSearchParams();
-      finalize.append('grant_type', 'code_request');
-      finalize.append('username', req.session.username);
-      finalize.append('authType', 'AT_FIDO');
-      finalize.append('request_uri', req.session.request_uri);
-      
       fetch(`${process.env.HID_AUTH_URL}/code`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${req.session.access_token}`,
           'Content-Type': 'application/x-www-form-urlencoded',
           'server-csrf-token': req.session.csrf
         },
@@ -284,7 +283,6 @@ app.post('/authenticate', (req, res) => {
       .then((response) => {
         if (response) {
           response.json().then((data) => {
-            delete req.session;
             res.json(data);
           });
         } else {
@@ -312,10 +310,28 @@ app.post('/authenticate', (req, res) => {
           },
           body: consent
         }).then((response) => {
-          if (response) {
-            response.json().then((data) => {
-              res.status(200);
-            });
+          req.session.csrf = response.headers.get('server-csrf-token');
+          if (response.ok) {
+            console.log('Consent updated, now get the token');
+
+            fetch(`${process.env.HID_AUTH_URL}/code`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'server-csrf-token': req.session.csrf
+              },
+              body: finalize
+            })
+            .then((response) => {
+              if (response) {
+                response.json().then((data) => {
+                  res.json(data);
+                });
+              } else {
+                console.error(`/code (Authenticate after consent): ${response.status}: ${response.statusText}`);
+                res.status(response.status).send(response.statusText);
+              }
+            })
           } else {
             console.error(`/consent (Authenticate): ${response.status}: ${response.statusText}`);
             res.status(response.status).send(response.statusText);
@@ -327,6 +343,42 @@ app.post('/authenticate', (req, res) => {
   .catch((err) => {
     console.error(err);
   });
+});
+
+app.get('/passkeys', (req, res) => {
+  fetch(`${process.env.HID_SCIM_URL}/Users/.search`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${req.session.access_token}`,
+      'Content-Type': 'application/scim+json'
+    },
+    body: JSON.stringify({filter: `userName eq ${req.session.username}`})
+  })
+  .then((response) => {
+    if (response.ok) {
+      response.json().then((user) => {
+        fetch(`${process.env.HID_SCIM_URL}/Device?filter=owner.value%20eq%20${user.resources[0].id}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${req.session.access_token}`,
+          }
+        })
+        .then((response) => {
+          if (response.ok) {
+            response.json().then((devices) => {
+              res.json({userName: user.resources[0].userName, devices: devices.resources});
+            })
+          } else {
+            console.error(`/Device?filter=owner.value: ${response.status} ${response.statusText}`);
+            res.status(response.status).send(response.statusText);
+          }
+        })
+      });
+    } else {
+      console.error(`/Users/.search: ${response.status} ${response.statusText}`);
+      res.status(response.status).send(response.statusText);
+    }
+  })
 });
 
 app.get('/health', (req, res) => {

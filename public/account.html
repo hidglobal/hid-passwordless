@@ -11,12 +11,17 @@
     <main class="page__content">
       <div class="region region--content">
         <section class="section section--layout-onecol">
-          <h2>Account Security</h2>
+          <h2 id="title">Welcome</h2>
           <p>You have access to your account with these authenticators</p>
+          <ul id="credentials" class="credentials"></ul>
           <button class="button button--primary" type="button" onclick="window.location.href='/';">Log Out</button>
         </section>
       </div>
     </main>
   </div>
 </body>
+<script src="js/fido.js"></script>
+<script>
+listCredentials();
+</script>
 </html>
