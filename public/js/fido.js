@@ -169,6 +169,41 @@ function notify(message, type) {
   }, 3000);
 }
 
+function unassignAndDeleteDevice(id) {
+  console.log(id)
+  fetch('/unassign-device', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: id })
+  })
+  .then((response) => {
+    notify(response.statusText, "success")
+    listCredentials()
+    window.location.href = "/account.html"
+  })
+}
+
+function editFriendlyName(id) {
+  let editNameBlock = document.createElement("div");
+  const currentValue = document.getElementById(id).innerHTML;
+  let confirmButton = `<button class="button button--primary" type="button" onclick="updateFriendlyName('${id}')">confirm</button>`
+  editNameBlock.innerHTML = `<input type="text" id="new-name" value="${currentValue}">${confirmButton}`
+  document.getElementById(id).parentElement.appendChild(editNameBlock);
+}
+
+function updateFriendlyName(id) {
+  const newName = document.getElementById('new-name').value;
+  fetch("/rename-device", {
+    method: "PUT",
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id: id, friendlyName: newName })
+  })
+  .then((response) => {
+    notify(response.statusText, "success")
+    window.location.href = "/account.html"
+  })
+}
+
 // Utility function to list authenticators
 function listCredentials() {
   fetch("/passkeys").then(function (response) {
@@ -180,7 +215,9 @@ function listCredentials() {
         user.devices.forEach(function (device) {
           let li = document.createElement("li");
           let date = new Date(device.meta.created);
-          li.innerHTML = `<strong>${device.friendlyName}</strong><div>Registered on ${date.toLocaleString(undefined, {dateStyle: 'medium', timeStyle: 'short'})}</div>`;
+          let editButton = `<button class="button" type="button" onclick="editFriendlyName('${device.id}')">edit</button>`
+          let deleteButton = `<button class="button button--primary" type="button" onclick="unassignAndDeleteDevice('${device.id}')">delete</button>`
+          li.innerHTML = `<strong id="${device.id}">${device.friendlyName}</strong><div>Registered on ${date.toLocaleString(undefined, {dateStyle: 'medium', timeStyle: 'short'})}</div><div>${editButton}${deleteButton}</div>`;
           document.getElementById("credentials").appendChild(li);
         });
       });

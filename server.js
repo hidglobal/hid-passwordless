@@ -393,6 +393,67 @@ app.get('/health', (req, res) => {
   });
 });
 
+app.put('/unassign-device', (req, res) => {
+  console.log('device id ' + JSON.stringify(req.body))
+  fetch(`${process.env.HID_SCIM_URL}/Device/${req.body.id}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${req.session.access_token}`,
+      'Content-Type': 'application/scim+json'
+    },
+    body: JSON.stringify({
+      "schemas": [
+        "urn:hid:scim:api:idp:2.0:Device"
+      ],
+      "id": req.body.id,
+      "owner": {
+        "value": ""
+      }
+    })
+  })
+  .then((response) => {
+    if (response.ok) {
+      fetch(`${process.env.HID_SCIM_URL}/Device/${req.body.id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${req.session.access_token}`}
+      })
+      .then((response) => {
+        console.log('device deleted ' + response);
+        res.status(response.status).send("Device successfully unlinked and deleted.")
+      })
+    } else {
+      console.error(`/Device?filter=owner.value: ${response.status} ${response.statusText}`);
+      res.status(response.status).send(response.statusText);
+    }
+  })
+});
+
+app.put('/rename-device', (req, res) => {
+  console.log('device id ' + JSON.stringify(req.body))
+  fetch(`${process.env.HID_SCIM_URL}/Device/${req.body.id}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${req.session.access_token}`,
+      'Content-Type': 'application/scim+json'
+    },
+    body: JSON.stringify({
+      "schemas": [
+        "urn:hid:scim:api:idp:2.0:Device"
+      ],
+      "id": req.body.id,
+      "friendlyName": req.body.friendlyName
+    })
+  })
+  .then((response) => {
+    if (response.ok) {
+      res.status(response.status).send("Device name successfully updated.")
+    } else {
+      console.error(`/Device: ${response.status} ${response.statusText}`);
+      res.status(response.status).send(response.statusText);
+    }
+  })
+});
+
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/index.html'));
 });
