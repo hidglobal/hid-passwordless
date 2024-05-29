@@ -215,9 +215,9 @@ function listCredentials() {
         user.devices.forEach(function (device) {
           let li = document.createElement("li");
           let date = new Date(device.meta.created);
-          let editButton = `<button class="button" type="button" onclick="editFriendlyName('${device.id}')">edit</button>`
-          let deleteButton = `<button class="button button--primary" type="button" onclick="unassignAndDeleteDevice('${device.id}')">delete</button>`
-          li.innerHTML = `<strong id="${device.id}">${device.friendlyName}</strong><div>Registered on ${date.toLocaleString(undefined, {dateStyle: 'medium', timeStyle: 'short'})}</div><div>${editButton}${deleteButton}</div>`;
+          let editButton = `<button class="button button--secondary" type="button" onclick="editFriendlyName('${device.id}')">Rename</button>`
+          let deleteButton = `<button class="button button--delete" type="button" onclick="unassignAndDeleteDevice('${device.id}')">Delete</button>`
+          li.innerHTML = `<strong id="${device.id}">${device.friendlyName}</strong><div>Registered on ${date.toLocaleString(undefined, {dateStyle: 'medium', timeStyle: 'short'})}${editButton}${deleteButton}</div>`;
           document.getElementById("credentials").appendChild(li);
         });
       });

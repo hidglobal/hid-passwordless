@@ -695,6 +695,11 @@ sub {
   color: var(--white);
 }
 
+.button--delete {
+  --buttonBgColor: var(--errorColor);
+  color: var(--white);
+}
+
 .button--secondary {
   border-color: var(--buttonBgColor);
 }
