@@ -33,6 +33,7 @@ function register() {
         const publicKey = data.publicKeyCredentialOptions;
         publicKey.challenge = Uint8Array.from(atob(publicKey.challenge.replace(/_/g, '/').replace(/-/g, '+')), (c) => c.charCodeAt(0));
         publicKey.user.id = Uint8Array.from(atob(publicKey.user.id.replace(/_/g, '/').replace(/-/g, '+')), (c) => c.charCodeAt(0));
+        publicKey.hints = ["security-key"];
         navigator.credentials.create({publicKey}).then(function (publicKeyCredential) {
           const credential = {
             type: publicKeyCredential.type,
@@ -91,6 +92,7 @@ function authenticate() {
         publicKey.allowCredentials.forEach(function (cred) {
           cred.id = Uint8Array.from(atob(cred.id.replace(/_/g, '/').replace(/-/g, '+')), (c) => c.charCodeAt(0));
         });
+        publicKey.hints = ["security-key"];
         navigator.credentials.get({publicKey}).then(function (publicKeyCredential) {
           console.log(publicKeyCredential);
           const credential = {
