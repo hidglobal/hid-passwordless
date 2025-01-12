@@ -1,6 +1,7 @@
 fly.toml
 Dockerfile
 .dockerignore
+.gitignore
 node_modules
 .git
 .env

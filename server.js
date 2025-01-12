@@ -2,21 +2,18 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
-let sessionStore = new session.MemoryStore();
-if (process.env.NODE_ENV === 'production') {
-  const redis = require('redis');
-  const RedisStore = require('connect-redis').default;
-  const redisClient = redis.createClient({url: process.env.REDIS_URL});
-  redisClient.connect().catch((err) => { console.error('Redis connection error: ', err); });
-  sessionStore = new RedisStore({ client: redisClient });
-}
+const {createClient} = require('redis');
+const {RedisStore} = require('connect-redis');
+
 const app = express();
 const port = process.env.PORT || 8080;
+const redisClient = createClient();
+redisClient.connect().catch(console.error);
 
 app.use(session({
+  store: new RedisStore({ client: redisClient }),
   secret: process.env.SESSION_SECRET,
   cookie: { maxAge: 60000 },
-  store: sessionStore,
   resave: false,
   saveUninitialized: false,
   unset: 'destroy'
